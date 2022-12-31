@@ -1,9 +1,9 @@
 -----------------------------------------
 -- BBDD AEROPORT
 -- BBDDAeroport.sql
--- Informàtica Avançada
+-- InformÃ tica AvanÃ§ada
 -- 2016-2017
--- Grau Gestió Aeronàutica
+-- Grau GestiÃ³ AeronÃ utica
 -----------------------------------------
 --
 -- Aquest script:
@@ -14,7 +14,7 @@
 --
 -- Si ja s'ha executat previament, l'script esborra les taules de la base de 
 -- dades i les torna a editar. 
--- De tal manera, cal IGNORAR els missatges d'error que dóna 
+-- De tal manera, cal IGNORAR els missatges d'error que dÃ³na 
 -- la primera vegada que s'executa. 
 --
 
@@ -44,7 +44,7 @@ CREATE TABLE PERSONA (
   NIF              VARCHAR2 (11) NOT NULL,
   NOM              VARCHAR2 (50), 
   DATA_NAIXEMENT   DATE,
-  ADREÇA           VARCHAR2 (30),
+  ADREÃ‡A           VARCHAR2 (30),
   CODI_POSTAL      NUMBER (5),
   POBLACIO         VARCHAR2 (25),
   PAIS             VARCHAR2 (15),
@@ -156,132 +156,59 @@ prompt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 prompt 
 set termout off
 
--- Referència RESERVA --> PERSONA
+-- ReferÃ¨ncia RESERVA --> PERSONA
 ALTER TABLE RESERVA ADD CONSTRAINT RESERVA_FK1
  FOREIGN KEY (NIF_CLIENT) 
   REFERENCES PERSONA (NIF);
 
--- Referència PORTA_EMBARCAMENT --> AEROPORT
+-- ReferÃ¨ncia PORTA_EMBARCAMENT --> AEROPORT
 ALTER TABLE PORTA_EMBARCAMENT ADD CONSTRAINT PORTA_EMBARCAMENT_FK1
  FOREIGN KEY (CODI_AEROPORT)
   REFERENCES AEROPORT(CODI_AEROPORT);
   
--- Referència VOL --> PORTA_EMBARCAMENT
+-- ReferÃ¨ncia VOL --> PORTA_EMBARCAMENT
 ALTER TABLE VOL ADD CONSTRAINT VOL_FK1
  FOREIGN KEY (ORIGEN,TERMINAL,AREA,PORTA)
   REFERENCES PORTA_EMBARCAMENT(CODI_AEROPORT,TERMINAL,AREA,PORTA);
 
--- Referència VOL --> AEROPORT
+-- ReferÃ¨ncia VOL --> AEROPORT
 ALTER TABLE VOL ADD CONSTRAINT VOL_FK2
  FOREIGN KEY (DESTINACIO)
   REFERENCES AEROPORT(CODI_AEROPORT);
 
--- Referència SEIENT --> VOL
+-- ReferÃ¨ncia SEIENT --> VOL
 ALTER TABLE SEIENT ADD CONSTRAINT SEIENT_FK1
  FOREIGN KEY (CODI_VOL,DATA)
   REFERENCES VOL(CODI_VOL,DATA);
   
--- Referència SEIENT --> BITLLET
+-- ReferÃ¨ncia SEIENT --> BITLLET
 ALTER TABLE SEIENT ADD CONSTRAINT SEIENT_FK2
  FOREIGN KEY (NIF_PASSATGER,CODI_VOL,DATA)
    REFERENCES BITLLET(NIF_PASSATGER,CODI_VOL,DATA);
 
--- Referència BITLLET --> PERSONA
+-- ReferÃ¨ncia BITLLET --> PERSONA
 ALTER TABLE BITLLET ADD CONSTRAINT BITLLET_FK1
  FOREIGN KEY (NIF_PASSATGER)
   REFERENCES PERSONA(NIF);
 
--- Referència BITLLET --> RESERVA
+-- ReferÃ¨ncia BITLLET --> RESERVA
 ALTER TABLE BITLLET ADD CONSTRAINT BITLLET_FK2
  FOREIGN KEY (LOCALITZADOR)
   REFERENCES RESERVA(LOCALITZADOR);
   
--- Referència BITLLET --> VOL
+-- ReferÃ¨ncia BITLLET --> VOL
 ALTER TABLE BITLLET ADD CONSTRAINT BITLLET_FK3
  FOREIGN KEY (CODI_VOL,DATA)
   REFERENCES VOL(CODI_VOL,DATA);
 
--- Referència BITLLET --> SEIENT
+-- ReferÃ¨ncia BITLLET --> SEIENT
 ALTER TABLE BITLLET ADD CONSTRAINT BITLLET_FK4
  FOREIGN KEY (CODI_VOL,DATA,FILA,LLETRA)
    REFERENCES SEIENT(CODI_VOL,DATA,FILA,LLETRA);
  
--- Referència MALETA --> BITLLET
+-- ReferÃ¨ncia MALETA --> BITLLET
 ALTER TABLE MALETA ADD CONSTRAINT MALETA_FK1
  FOREIGN KEY (NIF_PASSATGER,CODI_VOL,DATA)
   REFERENCES BITLLET(NIF_PASSATGER,CODI_VOL,DATA);
-
-COMMIT;
-
-set termout on
-prompt
-prompt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-prompt % 3. Afegint Registres a les Taules
-prompt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-prompt 
-set termout off
-
--- TAULA CLIENT
-@Taules\TaulaPersona.sql;
-set termout on
-prompt Taula Persona Creada
-set termout off
-
--- TAULA RESERVA
-@Taules\TaulaReserva2.sql;
-set termout on
-prompt Taula Reserva Creada
-set termout off
-
--- TAULA AEROPORT
-@Taules\TaulaAeroport.sql;
-set termout on
-prompt Taula Aeroport Creada
-set termout off
-
--- TAULA PORTA_EMBARCAMENT
-@Taules\TaulaPorta_embarcament.sql;
-set termout on
-prompt Taula Porta_Embarcament Creada
-set termout off
-
--- TAULA VOL
-@Taules\TaulaVol.sql;
-set termout on
-prompt Taula Vol Creada
-set termout off
-
--- TAULA Seient
-@Taules\TaulaSeient.sql;
-set termout on
-prompt Taula Seient Creada
-set termout off
-
--- TAULA BITLLET
-@Taules\TaulaBitllet.sql;
-set termout on
-prompt Taula Bitllet Creada
-set termout off
-
--- UPDATE TAULA SEIENT
-@Taules\UpdateTaulaSeient.sql;
-set termout on
-prompt Taula Seient Actualitzada
-set termout off
-
--- TAULA MALETA
-@Taules\TaulaMaleta.sql;
-set termout on
-prompt Taula Maleta Creada
-set termout off
-
---GRANT SELECT ON PERSONA to CARONTE_SELECT;
---GRANT SELECT ON RESERVA to CARONTE_SELECT;
---GRANT SELECT ON AEROPORT to CARONTE_SELECT;
---GRANT SELECT ON PORTA_EMBARCAMENT to CARONTE_SELECT;
---GRANT SELECT ON VOL to CARONTE_SELECT;
---GRANT SELECT ON SEIENT to CARONTE_SELECT;
---GRANT SELECT ON BITLLET to CARONTE_SELECT;
---GRANT SELECT ON MALETA to CARONTE_SELECT;
 
 COMMIT;

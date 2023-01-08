@@ -13,7 +13,9 @@
 - instala git
 - ejecuta ``git clone https://github.com/quiquelhappy/uab-bbdd-airport.git && cd uab-bbdd-airport && sh ./script.sh``
 
-## credenciales
+## una vez la base de datos se haya iniciado (suele tardar 10 minutos)
+para ver los datos en el sql developer, conectarse con las siguientes credenciales:
+
 ```
 host:         localhost
 port:         1521
@@ -23,3 +25,5 @@ user:         system
 password:     oracle
 schema:       SYS
 ```
+
+y tras conectarse a la base de datos, ejecutar la consulta SQL ``ALTER SESSION SET CURRENT_SCHEMA="SYS"``. Despues de esto, las consultas funcionarán bien
